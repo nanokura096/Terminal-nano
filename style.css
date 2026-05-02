@@ -1,142 +1,155 @@
+/* --- 
+   Terminal-nano Smartphone Optimized CSS 
+   --- */
+
+/* 全体：ズームと横揺れの防止 */
 * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
+  max-width: 100%;
 }
 
 html, body {
   margin: 0;
   padding: 0;
   width: 100%;
-  min-height: 100vh;
+  /* アドレスバーの影響を受けない高さ設定 */
+  min-height: 100dvh;
+  background-color: #000;
   overflow-x: hidden;
-
-  background: #000 !important;
-  color: #00ff00 !important;
-
-  font-family: monospace;
-  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  padding: 12px;
+  color: #00ff00;
+  font-family: 'Courier New', Courier, monospace;
+  /* 文字サイズの自動調整を防止 */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  padding: 16px;
+  line-height: 1.5;
 }
 
-/* ===== 全画面共通安全化 ===== */
-#loginScreen,
-#bootScreen,
-#mainTerminal,
-#loginBox,
-.inputArea {
-  background: #000 !important;
-  color: #00ff00 !important;
-}
-
-/* ===== ログイン ===== */
-#loginScreen {
-  height: 100vh;
+/* ヘッダー・ステータスバー */
+#statusbar {
+  font-size: 12px;
+  border-bottom: 1px solid #00ff00;
+  padding-bottom: 8px;
+  margin-bottom: 16px;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-between;
+  opacity: 0.8;
 }
 
-#loginBox {
+/* メインコンテナ */
+#mainTerminal {
   width: 100%;
-  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-/* ===== 入力 ===== */
+/* 入力エリア：iOSのズーム防止（重要） */
 input, select, textarea {
   width: 100%;
-  padding: 12px;
-  margin: 8px 0;
-
-  font-size: 16px;
-
+  padding: 14px;
+  margin: 4px 0;
+  /* 16px未満だとiPhoneでズームされるため固定 */
+  font-size: 16px !important;
   background: #000;
   color: #00ff00;
   border: 1px solid #00ff00;
+  border-radius: 0;
+  appearance: none;
   outline: none;
 }
 
-/* ===== ボタン ===== */
+input:focus {
+  box-shadow: 0 0 8px rgba(0, 255, 0, 0.5);
+}
+
+/* ボタン：タップ精度の向上 */
 button {
   width: 100%;
+  min-height: 48px; /* 指のサイズに最適化 */
   padding: 12px;
-  margin: 8px 0;
-
   font-size: 16px;
   font-weight: bold;
-
   background: #000;
   color: #00ff00;
   border: 1px solid #00ff00;
+  cursor: pointer;
+  transition: background 0.1s, transform 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+/* タップした瞬間のフィードバック */
 button:active {
   background: #00ff00;
   color: #000;
+  transform: scale(0.97);
 }
 
-/* ===== タブ ===== */
+/* タブレイアウト：2カラムで安定させる */
 #tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 12px 0;
 }
 
 #tabs button {
-  flex: 1 1 45%;
+  margin: 0;
+  font-size: 14px; /* タブは少し小さめでもOK */
 }
 
-/* ===== 結果ログ ===== */
+/* 出力エリア：ハッカー風スクロール */
 #result {
   margin-top: 10px;
-  padding: 10px;
+  padding: 12px;
   border: 1px solid #00ff00;
-
-  background: #000;
-
+  background: rgba(0, 20, 0, 0.5);
+  
+  /* テキストの折り返しを完璧にする */
   white-space: pre-wrap;
-  word-break: break-word;
+  word-break: break-all;
   overflow-wrap: anywhere;
-
-  max-height: 50vh;
+  
+  font-size: 14px;
+  line-height: 1.4;
+  
+  /* スマホで見やすい高さ制限 */
+  max-height: 300px;
   overflow-y: auto;
+  border-style: double; /* ターミナル感を出す */
 }
 
-/* ===== スタッフリスト ===== */
+/* 職員リストなどのカード形式 */
 .staffEntry {
-  padding: 10px;
-  margin: 6px 0;
-  border: 1px solid #003300;
+  padding: 12px;
+  margin: 8px 0;
+  border: 1px solid #004400;
+  background: #050505;
+  font-size: 13px;
+  border-left: 4px solid #00ff00; /* アクセント */
+}
+
+/* ログイン画面の調整 */
+#loginScreen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 60vh;
+}
+
+/* スクロールバーのカスタマイズ（ハッカー風） */
+#result::-webkit-scrollbar {
+  width: 6px;
+}
+#result::-webkit-scrollbar-thumb {
+  background: #00ff00;
+}
+#result::-webkit-scrollbar-track {
   background: #000;
-}
-
-/* ===== ステータスバー ===== */
-#statusbar {
-  font-size: 12px;
-  margin-bottom: 10px;
-  border-bottom: 1px solid #00ff00;
-  padding-bottom: 6px;
-}
-@keyframes shake {
-  0% { transform: translate(0,0); }
-  20% { transform: translate(-3px,2px); }
-  40% { transform: translate(3px,-2px); }
-  60% { transform: translate(-2px,1px); }
-  80% { transform: translate(2px,-1px); }
-  100% { transform: translate(0,0); }
-}
-
-@keyframes glitchFlash {
-  0% { filter: none; }
-  25% { filter: contrast(2) brightness(1.5); }
-  50% { filter: invert(1); }
-  75% { filter: contrast(2) hue-rotate(90deg); }
-  100% { filter: none; }
-}
-
-.noise {
-  animation: shake 0.2s linear 3, glitchFlash 0.4s ease;
 }
