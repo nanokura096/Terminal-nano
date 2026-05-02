@@ -1,125 +1,113 @@
-body{
-  background:black;
-  color:#00FF41;
-  font-family:monospace;
-  margin:0;
-  padding:20px;
+/* 基本設定：ズーム防止とタッチ操作の最適化 */
+* {
+  box-sizing: border-box;
+  /* タップ時の青いハイライトを消す（任意） */
+  -webkit-tap-highlight-color: transparent;
+  /* 横幅の突き抜けを物理的に阻止 */
+  max-width: 100%;
 }
 
-/* LOGIN */
-#loginScreen{
-  position:fixed;
-  inset:0;
-  background:black;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:9999;
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  /* 高さの計算をスマホのツールバーに合わせる */
+  min-height: 100dvh; 
+  overflow-x: hidden;
+  background: #000;
 }
 
-#loginBox{
-  border:1px solid #00FF41;
-  padding:30px;
-  width:300px;
-  text-align:center;
-  box-shadow:0 0 20px #00FF41;
+body {
+  color: #00ff00;
+  font-family: 'Courier New', Courier, monospace;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  padding: 16px; /* 少し余裕を持たせる */
+  line-height: 1.6;
 }
 
-#loginTitle{ margin-bottom:20px; }
-
-#loginError{
-  margin-top:10px;
-  color:red;
-  font-size:12px;
+/* 入力エリア：iOSの自動ズームを防止 */
+input, select, textarea {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  /* iOSは16px未満だとフォーカス時にズームするため16px固定 */
+  font-size: 16px !important;
+  background: #000;
+  color: #00ff00;
+  border: 1px solid #00ff00;
+  border-radius: 0; /* iOSの角丸をリセット */
+  appearance: none;
 }
 
-/* BOOT */
-#bootScreen{
-  white-space:pre-line;
-  font-size:18px;
-  line-height:1.6;
+/* ボタン：押しやすさ（アクセシビリティ）の向上 */
+button {
+  width: 100%;
+  min-height: 48px; /* 指で押しやすい最小サイズ */
+  padding: 12px;
+  margin: 8px 0;
+  font-size: 16px;
+  font-weight: bold;
+  background: #000;
+  color: #00ff00;
+  border: 1px solid #00ff00;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
-/* TERMINAL */
-#logo{
-  font-size:24px;
-  border-bottom:1px solid #00FF41;
-  margin-bottom:15px;
-  padding-bottom:10px;
+/* スマホ特有の「触った感」を出す */
+button:active {
+  background: #00ff00;
+  color: #000;
+  transform: scale(0.98);
 }
 
-#statusbar{ margin-bottom:15px; }
-
-.red{ color:red; }
-
-/* INPUT */
-.inputArea{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-bottom:15px;
+/* タブレイアウトの改善 */
+#tabs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 8px;
+  margin: 15px 0;
 }
 
-input, button, select{
-  background:black;
-  color:#00FF41;
-  border:1px solid #00FF41;
-  padding:10px;
-  font-family:monospace;
+#tabs button {
+  margin: 0; /* Grid使用時はmargin不要 */
 }
 
-button:hover{
-  box-shadow:0 0 10px #00FF41;
-  cursor:pointer;
+/* 出力エリア：読みやすさと折り返し */
+#result {
+  margin-top: 15px;
+  padding: 12px;
+  border: 1px solid #00ff00;
+  background: rgba(0, 50, 0, 0.2);
+  
+  /* テキストの折り返し設定 */
+  white-space: pre-wrap;
+  word-break: break-all;
+  overflow-wrap: anywhere;
+  
+  font-size: 14px;
+  line-height: 1.5;
+  /* 長いログが出る場合はここをスクロール可能に */
+  max-height: 50vh;
+  overflow-y: auto;
 }
 
-/* TABS */
-#tabs{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  margin-bottom:10px;
+/* 職員リスト：カード状にして見やすく */
+.staffEntry {
+  padding: 12px;
+  margin-bottom: 10px;
+  border: 1px solid #003300;
+  background: #050505;
+  font-size: 14px;
 }
 
-/* RESULT */
-#result{
-  border:1px solid #00FF41;
-  padding:15px;
-  min-height:300px;
-  max-height:300px;
-  overflow-y:auto;
-  box-shadow:0 0 12px #00FF41 inset;
-  white-space:pre-line;
-}
-
-/* STAFF */
-#staffListTitle{
-  margin-top:20px;
-  border-top:1px solid #00FF41;
-  padding-top:10px;
-  cursor:pointer;
-  user-select:none;
-}
-
-.staffEntry{
-  border:1px solid #00FF41;
-  padding:10px;
-  margin-top:8px;
-  cursor:pointer;
-}
-
-.staffEntry:hover{
-  box-shadow:0 0 10px #00FF41;
-}
-
-/* MOBILE */
-@media (max-width:600px){
-  .inputArea{
-    flex-direction:column;
-  }
-
-  #result{
-    min-height:250px;
-    max-height:250px;
-  }
+/* ステータスバー：上部に固定してもOK */
+#statusbar {
+  font-size: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px double #00ff00;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
 }
