@@ -1,133 +1,149 @@
-* {
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
-  max-width: 100%;
-}
-
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  min-height: 100dvh;
+body{
+  background:black;
+  color:#00FF41;
+  font-family:monospace;
+  margin:0;
+  padding: clamp(10px, 3vw, 20px);
   overflow-x: hidden;
-
-  /* 🔥 強制黒背景（白潰し） */
-  background: #000 !important;
-  color: #00ff00 !important;
+  min-height: 100vh;
 }
 
-body {
-  font-family: 'Courier New', Courier, monospace;
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-  padding: 16px;
-  line-height: 1.6;
+/* LOGIN */
+#loginScreen{
+  position:fixed;
+  inset:0;
+  background:black;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
 }
 
-/* 🔥 全体の背景白化を完全封印 */
-#loginScreen,
-#mainTerminal,
-#bootScreen,
-#loginBox,
-.inputArea {
-  background: #000 !important;
+#loginBox{
+  border:1px solid #00FF41;
+  padding: 12px 14px;
+  width: min(300px, 90vw);
+  text-align:center;
+  box-shadow:0 0 20px #00FF41;
 }
 
-/* 入力系 */
-input, select, textarea {
-  width: 100%;
-  padding: 12px;
-  margin: 8px 0;
-  font-size: 16px !important;
-
-  background: #000;
-  color: #00ff00;
-  border: 1px solid #00ff00;
-  appearance: none;
+#loginTitle{
+  margin-bottom:20px;
 }
 
-/* ボタン */
-button {
-  width: 100%;
-  min-height: 48px;
-  padding: 12px;
-  margin: 8px 0;
-
-  font-size: 16px;
-  font-weight: bold;
-
-  background: #000;
-  color: #00ff00;
-  border: 1px solid #00ff00;
+#loginError{
+  margin-top:10px;
+  color:red;
+  font-size:12px;
 }
 
-button:active {
-  background: #00ff00;
-  color: #000;
-  transform: scale(0.98);
+/* BOOT */
+#bootScreen{
+  padding-top: 10px;
+  white-space:pre-line;
+  font-size: clamp(14px, 4vw, 18px);
+  line-height:1.6;
 }
 
-/* タブ */
-#tabs {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 8px;
-  margin: 15px 0;
+/* TERMINAL */
+#logo{
+  font-size:24px;
+  border-bottom:1px solid #00FF41;
+  margin-bottom:15px;
+  padding-bottom:10px;
 }
 
-#tabs button {
-  margin: 0;
+#statusbar{
+  margin-bottom:15px;
 }
 
-/* 結果ログ */
-#result {
-  margin-top: 15px;
-  padding: 12px;
-
-  border: 1px solid #00ff00;
-  background: rgba(0, 0, 0, 0.9);
-
-  white-space: pre-wrap;
-  word-break: break-word;
-  overflow-wrap: anywhere;
-
-  font-size: 14px;
-  line-height: 1.5;
-
-  max-height: 50vh;
-  overflow-y: auto;
+.red{
+  color:red;
 }
 
-/* スタッフリスト */
-.staffEntry {
-  padding: 12px;
-  margin-bottom: 10px;
-
-  border: 1px solid #003300;
-  background: #000;
-  font-size: 14px;
+/* INPUT */
+.inputArea{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:15px;
 }
 
-/* ステータスバー */
-#statusbar {
-  font-size: 12px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #00ff00;
-  margin-bottom: 15px;
-
-  display: flex;
-  justify-content: space-between;
+input, button, select{
+  background:black;
+  color:#00FF41;
+  border:1px solid #00FF41;
+  padding:12px 14px;
+  font-family:monospace;
+  font-size: clamp(14px, 4vw, 18px);
+  min-height: 44px;
+  box-sizing: border-box;
 }
 
-/* ログイン中央固定 */
-#loginScreen {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* BUTTON */
+button{
+  cursor:pointer;
 }
 
-#loginBox {
-  width: 100%;
-  max-width: 320px;
+button:hover{
+  box-shadow:0 0 10px #00FF41;
+}
+
+/* スマホhover無効化 */
+@media (hover: hover){
+  button:hover{
+    box-shadow:0 0 10px #00FF41;
+  }
+}
+
+/* TABS */
+#tabs{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-bottom:10px;
+}
+
+/* RESULT */
+#result{
+  border:1px solid #00FF41;
+  padding:15px;
+  min-height:300px;
+  max-height: clamp(250px, 50vh, 400px);
+  overflow-y:auto;
+  scroll-behavior: smooth;
+  box-shadow:0 0 12px #00FF41 inset;
+  white-space:pre-line;
+}
+
+/* STAFF */
+#staffListTitle{
+  margin-top:20px;
+  border-top:1px solid #00FF41;
+  padding-top:10px;
+  cursor:pointer;
+  user-select:none;
+}
+
+.staffEntry{
+  border:1px solid #00FF41;
+  padding:10px;
+  margin-top:8px;
+  cursor:pointer;
+}
+
+.staffEntry:hover{
+  box-shadow:0 0 10px #00FF41;
+}
+
+/* MOBILE */
+@media (max-width:600px){
+  .inputArea{
+    flex-direction:column;
+  }
+
+  #result{
+    min-height:250px;
+    max-height:250px;
+  }
 }
