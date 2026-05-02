@@ -771,5 +771,20 @@ function loadStaffList(){
 function toggleStaffList(){
   staffOpen = !staffOpen;
   document.getElementById("staffList").style.display =
-    staffOpen ? "block" : "none";
+    staffOpen ? "block" : "function loginFailEffect(){
+  const screen = document.body;
+
+  // ノイズ付与
+  screen.classList.add("noise");
+
+  // エラー音っぽいビープ
+  beep(120, 120);
+  setTimeout(()=>beep(80, 120), 150);
+  setTimeout(()=>beep(60, 200), 300);
+
+  // 画面揺れ終了
+  setTimeout(()=>{
+    screen.classList.remove("noise");
+  }, 600);
 }
+
