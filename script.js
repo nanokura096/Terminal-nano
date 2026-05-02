@@ -565,17 +565,6 @@ E:爆発物
   },
   ]
   
-  
-/* =========================
-   STATE
-========================= */
-let currentFile = null;
-let staffOpen = true;
-let loginFailCount = 0;
-
-/* =========================
-   LOGIN INFO
-========================= */
 const VALID_USER = "Hazmat";
 const VALID_PASS = "Nothing";
 
@@ -592,25 +581,17 @@ function login(){
   const u = user.value.trim();
   const p = pass.value.trim();
 
+  console.log("LOGIN TRY:", u, p);
+
   if(u === VALID_USER && p === VALID_PASS){
-
-    loginFailCount = 0;
-
     document.getElementById("loginScreen").style.display = "none";
-    beep(800,80);
+    document.getElementById("mainTerminal").style.display = "block";
+
+    beep(800, 80);
     startBoot();
-
   } else {
-
-    loginFailCount++;
-    beep(200,150);
-
-    if(loginFailCount >= 3){
-      triggerMemoryWipe();
-      return;
-    }
-
-    error.innerText = `AUTH FAILED (${loginFailCount}/3)`;
+    error.innerText = "AUTH FAILED";
+    beep(200, 150);
   }
 }
 
@@ -619,7 +600,6 @@ function login(){
 ========================= */
 function startBoot(){
   const boot = document.getElementById("bootScreen");
-  boot.innerHTML = "";
 
   const lines = [
     "ACCESSING FOUNDATION SERVER...",
@@ -630,126 +610,49 @@ function startBoot(){
 
   let i = 0;
 
-  function next(){
+  function type(){
     if(i >= lines.length){
       setTimeout(()=>{
         boot.style.display = "none";
-        document.getElementById("mainTerminal").style.display = "block";
-
-        updateClock();
-        setInterval(updateClock,1000);
         loadStaffList();
-
-      },500);
+        updateClock();
+        setInterval(updateClock, 1000);
+      }, 500);
       return;
     }
 
-    typeText(lines[i] + "\n", ()=>{
-      i++;
-      setTimeout(next, 300);
-    });
+    boot.innerHTML += lines[i] + "<br>";
+    beep(600, 20);
+    i++;
+    setTimeout(type, 300);
   }
 
-  next();
+  type();
 }
 
 /* =========================
-   TYPE EFFECT
-========================= */
-function typeText(text, callback){
-  const boot = document.getElementById("bootScreen");
-
-  let i = 0;
-
-  function step(){
-    if(i < text.length){
-      const c = text[i];
-      boot.innerHTML += c;
-
-      if(c !== " " && c !== "\n"){
-        beep(400 + Math.random()*200, 12);
-      }
-
-      setTimeout(step, 35 + Math.random()*70);
-
-      i++;
-    } else {
-      callback && callback();
-    }
-  }
-
-  step();
-}
-
-/* =========================
-   MEMORY WIPE (3回失敗)
-========================= */
-function triggerMemoryWipe(){
-  const error = document.getElementById("loginError");
-
-  error.innerText = "!!! SECURITY BREACH DETECTED !!!";
-
-  let t = 0;
-
-  const interval = setInterval(()=>{
-
-    document.body.style.filter =
-      `contrast(${1 + Math.random()}) brightness(${1 - Math.random()*0.5})`;
-
-    beep(100 + Math.random()*800, 25);
-
-    t++;
-
-    if(t > 10){
-      clearInterval(interval);
-
-      document.body.style.filter = "none";
-
-      loginFailCount = 0;
-
-      error.innerText = "MEMORY WIPE COMPLETE";
-
-      document.getElementById("username").value = "";
-      document.getElementById("password").value = "";
-    }
-
-  },150);
-}
-
-/* =========================
-   AUDIO FIX
-========================= */
-let audioUnlocked = false;
-
-document.addEventListener("click", ()=>{
-  if(audioUnlocked) return;
-  audioUnlocked = true;
-
-  const ctx = new (window.AudioContext || window.webkitAudioContext)();
-  ctx.resume();
-});
-
-/* =========================
-   BEEP
+   SOUND
 ========================= */
 function beep(freq, duration){
-  const ctx = new (window.AudioContext || window.webkitAudioContext)();
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
 
-  osc.connect(gain);
-  gain.connect(ctx.destination);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
 
-  osc.frequency.value = freq;
-  osc.type = "square";
-  gain.gain.value = 0.03;
+    osc.frequency.value = freq;
+    osc.type = "square";
+    gain.gain.value = 0.02;
 
-  osc.start();
+    osc.start();
 
-  setTimeout(()=>{
-    osc.stop();
-    ctx.close();
-  }, duration);
+    setTimeout(()=>{
+      osc.stop();
+      ctx.close();
+    }, duration);
+  } catch(e){}
 }
 
 /* =========================
@@ -757,10 +660,8 @@ function beep(freq, duration){
 ========================= */
 function updateClock(){
   const now = new Date();
-
-  document.getElementById("statusbar").innerHTML =
-    "SYSTEM STATUS: ACTIVE<br>" +
-    "LOCAL TIME: " + now.toLocaleString();
+  document.getElementById("statusbar").innerText =
+    "SYSTEM ACTIVE | " + now.toLocaleString();
 }
 
 /* =========================
@@ -784,8 +685,8 @@ function searchFile(){
   }
 
   currentFile = found;
-
   document.getElementById("tabs").style.display = "flex";
+
   showTab("personnel");
 }
 
@@ -797,6 +698,7 @@ function showTab(tab){
 
   const f = currentFile;
   const r = document.getElementById("result");
+
   const safe = v => v ?? "[NO DATA]";
 
   if(tab === "personnel"){
@@ -817,7 +719,7 @@ ${safe(f.profile)}`;
     r.innerText = safe(f.ability);
   }
 
-  if(tab === "███"){
+  if(tab === "scp"){
     r.innerText =
 `WEAPON:
 ${safe(f.weapon)}
@@ -825,8 +727,8 @@ ${safe(f.weapon)}
 DETAIL:
 ${safe(f.Description)}
 
-███:
-${safe(f.███)}`;
+DATA:
+${safe(f.SCP)}`;
   }
 
   if(tab === "record"){
@@ -844,7 +746,7 @@ ${safe(f.note)}`;
 ========================= */
 function loadStaffList(){
   const list = document.getElementById("staffList");
-  if(!list) return;
+  if(!list || typeof files === "undefined") return;
 
   list.innerHTML = "";
 
@@ -852,13 +754,9 @@ function loadStaffList(){
     const div = document.createElement("div");
     div.className = "staffEntry";
 
-    div.innerHTML = `
-      STAFF ID: ${f.id}<br>
-      NAME: ${f.name}<br>
-      CLEARANCE: ${f.clearance}
-    `;
+    div.innerText = `${f.id} | ${f.name} | CLEARANCE ${f.clearance}`;
 
-    div.onclick = ()=>{
+    div.onclick = () => {
       document.getElementById("staffId").value = f.id;
       searchFile();
     };
@@ -875,28 +773,3 @@ function toggleStaffList(){
   document.getElementById("staffList").style.display =
     staffOpen ? "block" : "none";
 }
-
-/* =========================
-   SWIPE
-========================= */
-let startX = 0;
-const tabs = ["personnel","ability","███","record"];
-let tabIndex = 0;
-
-document.addEventListener("touchstart",e=>{
-  startX = e.touches[0].clientX;
-});
-
-document.addEventListener("touchend",e=>{
-  if(!currentFile) return;
-
-  let diff = e.changedTouches[0].clientX - startX;
-  if(Math.abs(diff) < 50) return;
-
-  if(diff > 0) tabIndex--;
-  else tabIndex++;
-
-  tabIndex = Math.max(0, Math.min(tabs.length-1, tabIndex));
-
-  showTab(tabs[tabIndex]);
-});
