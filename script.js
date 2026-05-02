@@ -16,14 +16,16 @@ const files = [
     remark:"[DATA EXPUNGED]",
     profile:"対象は鳴響隊長である。",
      weapon:"天理楔",
-    CP:`多サイト集合体サイト-256地下階層βM2階███号室「鳴響チーム待機場所」内特別0号収容ロッカーにて収容中。
+    SCP:`多サイト集合体サイト-256地下階層βM2階███号室「鳴響チーム待機場所」内特別0号収容ロッカーにて収容中。
 アクセス可能職員は「鳴響チーム」、または「鳴響チームから許可があった職員のみ」。
 緊急時、その他任務時は「#鳴響チーム所属職員α」が持ち出す。
 それ以外の場合の他階層への持ち出しは一切禁止されている。
+たとえアクセス権限レベルが「O5」だとしても、アクセスはできない。
+クリアランスレベル「3R」「4R」「5R」「30」「40」の職員限定でロッカーの解錠を許可されている。
 `,
 Description:`全長██cmの鉾。
-天逆鉾のような形をしているが、柄([アクセス拒否])は取り外しが可。
-代わりに、元の柄の1/3の長さの柄([アクセス拒否])を取り付けることも可能。
+天逆鉾のような形をしているが、柄(SCP-110978-R-2)は取り外しが可。
+代わりに、元の柄の1/3の長さの柄(SCP-110978-R-3)を取り付けることも可能。
 その柄は鳴響チーム所属隊員α(以下N)の体とリンクしており、Nの能力を鉾で発動することもできる。
 また、固有の異常性として、攻撃された人間の行動を「拒否」することが可能。
 原因は保持されるため、行動が起こるという選択肢は残っているが「起こさない」という選択肢を強制的に選択させる。
@@ -551,7 +553,7 @@ E:爆発物
     remark:"PARTIAL DATA LOCKED",
     profile:"新人である。",
     weapon:"天逆楔",
-     CP:`以下の神具格納式神を利用し、天音 凛によって所持されてください。
+     SCP:`以下の神具格納式神を利用し、天音 凛によって所持されてください。
 いかなる場合も適合者以外の所持は許可されません。
 適合者:天音 凛、鳴瀬 可楚、鳴雨 初芽、鳴乃 朔、零斗、零乃 柚`,
     Description:`それは「あらゆる事象の無効化」を可能にした鉾です。
@@ -563,7 +565,7 @@ E:爆発物
     record:"[アクセス拒否]",
     note:"[アクセス拒否]",
   },
-  ]
+  ];
   
 const VALID_USER = "Hazmat";
 const VALID_PASS = "Nothing";
@@ -677,9 +679,6 @@ function updateClock(){
     "SYSTEM ACTIVE | " + now.toLocaleString();
 }
 
-/* =========================
-   SEARCH
-========================= */
 function searchFile(){
   const id = document.getElementById("staffId").value;
   const clearance = Number(document.getElementById("clearance").value);
@@ -689,18 +688,22 @@ function searchFile(){
 
   if(!found){
     result.innerText = "FILE NOT FOUND";
+    beep(200,150);
     return;
   }
 
   if(clearance < Number(found.clearance)){
     result.innerText = "ACCESS DENIED";
+    beep(150,200);
     return;
   }
 
   currentFile = found;
   document.getElementById("tabs").style.display = "flex";
-
-  showTab("personnel");
+  loadFileWithEffect(()=>{
+    beep(800, 80);
+    showTab("personnel");
+  });
 }
 
 /* =========================
@@ -712,7 +715,9 @@ function showTab(tab){
   const f = currentFile;
   const r = document.getElementById("result");
 
+
   const safe = v => v ?? "[NO DATA]";
+
 
   if(tab === "personnel"){
     r.innerText =
@@ -787,9 +792,20 @@ function toggleStaffList(){
     staffOpen ? "block" : "function loginFailEffect(){
   const screen = document.body;
 
-  // ノイズ付与
+/* =========================
+   SWIPE
+========================= */
+let startX = 0;
+const tabs = ["personnel","ability","scp","record"];
+let tabIndex = 0;
+ main
+ 
+ 
+function addNoise(){
+  const screen = document.body; // or 対象要素
   screen.classList.add("noise");
-
+}
+  
   // エラー音っぽいビープ
   beep(120, 120);
   setTimeout(()=>beep(80, 120), 150);
@@ -801,3 +817,35 @@ function toggleStaffList(){
   }, 600);
 }
 
+
+  showTab(tabs[tabIndex]);
+});
+
+function loadFileWithEffect(callback){
+  const r = document.getElementById("result");
+
+  const frames = [
+    "ACCESSING FILE...",
+    "DECRYPTING DATA...",
+    "LOADING CONTENT...",
+    "COMPLETE"
+  ];
+
+  let i = 0;
+
+  r.innerText = "";
+
+  const interval = setInterval(() => {
+    r.innerText = frames[i] || frames[frames.length - 1];
+
+    beep(300 + i * 120, 30);
+
+    i++;
+
+    if(i >= frames.length){
+      clearInterval(interval);
+      setTimeout(callback, 150);
+    }
+
+  }, 180);
+}

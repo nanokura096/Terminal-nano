@@ -1,3 +1,4 @@
+
 /* --- 
    Terminal-nano Smartphone Optimized CSS 
    --- */
@@ -152,4 +153,17 @@ button:active {
 }
 #result::-webkit-scrollbar-track {
   background: #000;
+
+}
+
+/* MOBILE */
+@media (max-width:600px){
+  .inputArea{
+    flex-direction:column;
+  }
+
+  #result{
+    min-height:250px;
+    max-height:250px;
+  }
 }

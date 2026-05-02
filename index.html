@@ -1,25 +1,27 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>FOUNDATION TERMINAL</title>
+  <title>Alternative Terminal</title>
 
-  <!-- 🔥 GitHub Pages安全パス -->
-  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <div id="loginScreen">
   <div id="loginBox">
-    <div id="loginTitle">AUTHENTICATION REQUIRED</div>
+    <div id="loginTitle">
+AUTHENTICATION REQUIRED</div>
 
     <input type="text" id="username" placeholder="[USER ID]" autocomplete="off">
     <input type="password" id="password" placeholder="[REDACTED]" autocomplete="off">
 
     <button onclick="login()">ACCESS</button>
+
     <div id="loginError"></div>
   </div>
 </div>
@@ -28,7 +30,7 @@
 
 <div id="mainTerminal" style="display:none;">
 
-  <div id="logo">FOUNDATION PERSONNEL TERMINAL</div>
+  <div id="logo">███ FOUNDATION PERSONNEL TERMINAL</div>
 
   <div id="statusbar"></div>
 
@@ -50,7 +52,7 @@
   <div id="tabs" style="display:none;">
     <button onclick="showTab('personnel')">PERSONNEL</button>
     <button onclick="showTab('ability')">ABILITY</button>
-    <button onclick="showTab('scp')">DATA</button>
+    <button onclick="showTab('scp')">SCP</button>
     <button onclick="showTab('record')">RECORD</button>
   </div>
 
@@ -64,8 +66,7 @@
 
 </div>
 
-<!-- JS -->
-<script src="./script.js"></script>
+<script src="script.js"></script>
 
 </body>
 </html>
