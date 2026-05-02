@@ -1,0 +1,125 @@
+body{
+  background:black;
+  color:#00FF41;
+  font-family:monospace;
+  margin:0;
+  padding:20px;
+}
+
+/* LOGIN */
+#loginScreen{
+  position:fixed;
+  inset:0;
+  background:black;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+}
+
+#loginBox{
+  border:1px solid #00FF41;
+  padding:30px;
+  width:300px;
+  text-align:center;
+  box-shadow:0 0 20px #00FF41;
+}
+
+#loginTitle{ margin-bottom:20px; }
+
+#loginError{
+  margin-top:10px;
+  color:red;
+  font-size:12px;
+}
+
+/* BOOT */
+#bootScreen{
+  white-space:pre-line;
+  font-size:18px;
+  line-height:1.6;
+}
+
+/* TERMINAL */
+#logo{
+  font-size:24px;
+  border-bottom:1px solid #00FF41;
+  margin-bottom:15px;
+  padding-bottom:10px;
+}
+
+#statusbar{ margin-bottom:15px; }
+
+.red{ color:red; }
+
+/* INPUT */
+.inputArea{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:15px;
+}
+
+input, button, select{
+  background:black;
+  color:#00FF41;
+  border:1px solid #00FF41;
+  padding:10px;
+  font-family:monospace;
+}
+
+button:hover{
+  box-shadow:0 0 10px #00FF41;
+  cursor:pointer;
+}
+
+/* TABS */
+#tabs{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-bottom:10px;
+}
+
+/* RESULT */
+#result{
+  border:1px solid #00FF41;
+  padding:15px;
+  min-height:300px;
+  max-height:300px;
+  overflow-y:auto;
+  box-shadow:0 0 12px #00FF41 inset;
+  white-space:pre-line;
+}
+
+/* STAFF */
+#staffListTitle{
+  margin-top:20px;
+  border-top:1px solid #00FF41;
+  padding-top:10px;
+  cursor:pointer;
+  user-select:none;
+}
+
+.staffEntry{
+  border:1px solid #00FF41;
+  padding:10px;
+  margin-top:8px;
+  cursor:pointer;
+}
+
+.staffEntry:hover{
+  box-shadow:0 0 10px #00FF41;
+}
+
+/* MOBILE */
+@media (max-width:600px){
+  .inputArea{
+    flex-direction:column;
+  }
+
+  #result{
+    min-height:250px;
+    max-height:250px;
+  }
+}
