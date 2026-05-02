@@ -1,125 +1,116 @@
-body{
-  background:black;
-  color:#00FF41;
-  font-family:monospace;
-  margin:0;
-  padding:20px;
+* {
+  box-sizing: border-box;
 }
 
-/* LOGIN */
-#loginScreen{
-  position:fixed;
-  inset:0;
-  background:black;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:9999;
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
 }
 
-#loginBox{
-  border:1px solid #00FF41;
-  padding:30px;
-  width:300px;
-  text-align:center;
-  box-shadow:0 0 20px #00FF41;
+body {
+  background: #000;
+  color: #00ff00;
+  font-family: monospace;
+
+  /* スマホでの文字崩れ防止 */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+
+  /* 余白統一 */
+  padding: 12px;
 }
 
-#loginTitle{ margin-bottom:20px; }
-
-#loginError{
-  margin-top:10px;
-  color:red;
-  font-size:12px;
+/* 全体レイアウト */
+#mainTerminal {
+  width: 100%;
 }
 
-/* BOOT */
-#bootScreen{
-  white-space:pre-line;
-  font-size:18px;
-  line-height:1.6;
+/* 入力系（ここ重要） */
+input {
+  width: 100%;
+  padding: 12px;
+  margin: 6px 0;
+  font-size: 16px;
+
+  background: #000;
+  color: #00ff00;
+  border: 1px solid #00ff00;
 }
 
-/* TERMINAL */
-#logo{
-  font-size:24px;
-  border-bottom:1px solid #00FF41;
-  margin-bottom:15px;
-  padding-bottom:10px;
+/* ボタン */
+button {
+  width: 100%;
+  padding: 12px;
+  margin: 6px 0;
+  font-size: 16px;
+
+  background: #000;
+  color: #00ff00;
+  border: 1px solid #00ff00;
 }
 
-#statusbar{ margin-bottom:15px; }
-
-.red{ color:red; }
-
-/* INPUT */
-.inputArea{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-bottom:15px;
+/* タップ改善 */
+button:active {
+  background: #00ff00;
+  color: #000;
 }
 
-input, button, select{
-  background:black;
-  color:#00FF41;
-  border:1px solid #00FF41;
-  padding:10px;
-  font-family:monospace;
+/* タブ */
+#tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
 }
 
-button:hover{
-  box-shadow:0 0 10px #00FF41;
-  cursor:pointer;
+#tabs button {
+  flex: 1 1 48%;
+  min-width: 120px;
 }
 
-/* TABS */
-#tabs{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  margin-bottom:10px;
+/* 出力エリア（ここが一番重要） */
+#result {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #00ff00;
+
+  /* スマホ崩れ防止の核心 */
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  font-size: 14px;
+  line-height: 1.4;
 }
 
-/* RESULT */
-#result{
-  border:1px solid #00FF41;
-  padding:15px;
-  min-height:300px;
-  max-height:300px;
-  overflow-y:auto;
-  box-shadow:0 0 12px #00FF41 inset;
-  white-space:pre-line;
+/* ステータスバー */
+#statusbar {
+  font-size: 12px;
+  margin-bottom: 10px;
+  opacity: 0.9;
 }
 
-/* STAFF */
-#staffListTitle{
-  margin-top:20px;
-  border-top:1px solid #00FF41;
-  padding-top:10px;
-  cursor:pointer;
-  user-select:none;
+/* 職員リスト */
+#staffList {
+  margin-top: 10px;
 }
 
-.staffEntry{
-  border:1px solid #00FF41;
-  padding:10px;
-  margin-top:8px;
-  cursor:pointer;
+.staffEntry {
+  padding: 10px;
+  margin: 6px 0;
+  border: 1px solid #00ff00;
+  font-size: 13px;
 }
 
-.staffEntry:hover{
-  box-shadow:0 0 10px #00FF41;
+/* ログイン画面 */
+#loginScreen {
+  width: 100%;
+  padding: 20px;
 }
 
-/* MOBILE */
-@media (max-width:600px){
-  .inputArea{
-    flex-direction:column;
-  }
-
-  #result{
-    min-height:250px;
-    max-height:250px;
-  }
+/* スマホ特有の横ズレ完全防止 */
+* {
+  max-width: 100%;
 }
