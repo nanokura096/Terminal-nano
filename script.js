@@ -16,16 +16,14 @@ const files = [
     remark:"[DATA EXPUNGED]",
     profile:"対象は鳴響隊長である。",
      weapon:"天理楔",
-    SCP:`多サイト集合体サイト-256地下階層βM2階███号室「鳴響チーム待機場所」内特別0号収容ロッカーにて収容中。
+    CP:`多サイト集合体サイト-███地下階層βM2階███号室「鳴響チーム待機場所」内特別0号収容ロッカーにて収容中。
 アクセス可能職員は「鳴響チーム」、または「鳴響チームから許可があった職員のみ」。
 緊急時、その他任務時は「#鳴響チーム所属職員α」が持ち出す。
 それ以外の場合の他階層への持ち出しは一切禁止されている。
-たとえアクセス権限レベルが「O5」だとしても、アクセスはできない。
-クリアランスレベル「3R」「4R」「5R」「30」「40」の職員限定でロッカーの解錠を許可されている。
 `,
 Description:`全長██cmの鉾。
-天逆鉾のような形をしているが、柄(SCP-110978-R-2)は取り外しが可。
-代わりに、元の柄の1/3の長さの柄(SCP-110978-R-3)を取り付けることも可能。
+天逆鉾のような形をしているが、柄([アクセス拒否])は取り外しが可。
+代わりに、元の柄の1/3の長さの柄([アクセス拒否])を取り付けることも可能。
 その柄は鳴響チーム所属隊員α(以下N)の体とリンクしており、Nの能力を鉾で発動することもできる。
 また、固有の異常性として、攻撃された人間の行動を「拒否」することが可能。
 原因は保持されるため、行動が起こるという選択肢は残っているが「起こさない」という選択肢を強制的に選択させる。
@@ -553,7 +551,7 @@ E:爆発物
     remark:"PARTIAL DATA LOCKED",
     profile:"新人である。",
     weapon:"天逆楔",
-     SCP:`以下の神具格納式神を利用し、天音 凛によって所持されてください。
+     CP:`以下の神具格納式神を利用し、天音 凛によって所持されてください。
 いかなる場合も適合者以外の所持は許可されません。
 適合者:天音 凛、鳴瀬 可楚、鳴雨 初芽、鳴乃 朔、零斗、零乃 柚`,
     Description:`それは「あらゆる事象の無効化」を可能にした鉾です。
@@ -567,18 +565,7 @@ E:爆発物
   },
   ]
   
-  
-/* =========================
-   STATE
-========================= */
-let currentFile = null;
-let staffOpen = true;
-let loginFailCount = 0;
-
-/* =========================
-   LOGIN INFO
-========================= */
-const VALID_USER = "Hazmat";
+  const VALID_USER = "Hazmat";
 const VALID_PASS = "Nothing";
 
 /* =========================
@@ -591,28 +578,14 @@ function login(){
 
   if(!user || !pass) return;
 
-  const u = user.value.trim();
-  const p = pass.value.trim();
-
-  if(u === VALID_USER && p === VALID_PASS){
-
-    loginFailCount = 0;
-
+  if(
+    user.value.trim() === VALID_USER &&
+    pass.value.trim() === VALID_PASS
+  ){
     document.getElementById("loginScreen").style.display = "none";
-    beep(800,80);
     startBoot();
-
-  } else {
-
-    loginFailCount++;
-    beep(200,150);
-
-    if(loginFailCount >= 3){
-      triggerMemoryWipe();
-      return;
-    }
-
-    error.innerText = `AUTH FAILED (${loginFailCount}/3)`;
+  }else{
+    error.innerText = "AUTH FAILED";
   }
 }
 
@@ -621,10 +594,9 @@ function login(){
 ========================= */
 function startBoot(){
   const boot = document.getElementById("bootScreen");
-  boot.innerHTML = "";
 
   const lines = [
-    "ACCESSING FOUNDATION SERVER...",
+    "ACCESSING SYSTEM...",
     "CONNECTING...",
     "LOADING DATABASE...",
     "INITIALIZING TERMINAL..."
@@ -632,126 +604,24 @@ function startBoot(){
 
   let i = 0;
 
-  function next(){
+  function type(){
     if(i >= lines.length){
       setTimeout(()=>{
         boot.style.display = "none";
         document.getElementById("mainTerminal").style.display = "block";
-
         updateClock();
         setInterval(updateClock,1000);
         loadStaffList();
-
-      },500);
+      },300);
       return;
     }
 
-    typeText(lines[i] + "\n", ()=>{
-      i++;
-      setTimeout(next, 300);
-    });
+    boot.innerHTML += lines[i] + "<br>";
+    i++;
+    setTimeout(type,300);
   }
 
-  next();
-}
-
-/* =========================
-   TYPE EFFECT
-========================= */
-function typeText(text, callback){
-  const boot = document.getElementById("bootScreen");
-
-  let i = 0;
-
-  function step(){
-    if(i < text.length){
-      const c = text[i];
-      boot.innerHTML += c;
-
-      if(c !== " " && c !== "\n"){
-        beep(400 + Math.random()*200, 12);
-      }
-
-      setTimeout(step, 35 + Math.random()*70);
-
-      i++;
-    } else {
-      callback && callback();
-    }
-  }
-
-  step();
-}
-
-/* =========================
-   MEMORY WIPE (3回失敗)
-========================= */
-function triggerMemoryWipe(){
-  const error = document.getElementById("loginError");
-
-  error.innerText = "!!! SECURITY BREACH DETECTED !!!";
-
-  let t = 0;
-
-  const interval = setInterval(()=>{
-
-    document.body.style.filter =
-      `contrast(${1 + Math.random()}) brightness(${1 - Math.random()*0.5})`;
-
-    beep(100 + Math.random()*800, 25);
-
-    t++;
-
-    if(t > 10){
-      clearInterval(interval);
-
-      document.body.style.filter = "none";
-
-      loginFailCount = 0;
-
-      error.innerText = "MEMORY WIPE COMPLETE";
-
-      document.getElementById("username").value = "";
-      document.getElementById("password").value = "";
-    }
-
-  },150);
-}
-
-/* =========================
-   AUDIO FIX
-========================= */
-let audioUnlocked = false;
-
-document.addEventListener("click", ()=>{
-  if(audioUnlocked) return;
-  audioUnlocked = true;
-
-  const ctx = new (window.AudioContext || window.webkitAudioContext)();
-  ctx.resume();
-});
-
-/* =========================
-   BEEP
-========================= */
-function beep(freq, duration){
-  const ctx = new (window.AudioContext || window.webkitAudioContext)();
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
-
-  osc.connect(gain);
-  gain.connect(ctx.destination);
-
-  osc.frequency.value = freq;
-  osc.type = "square";
-  gain.gain.value = 0.03;
-
-  osc.start();
-
-  setTimeout(()=>{
-    osc.stop();
-    ctx.close();
-  }, duration);
+  type();
 }
 
 /* =========================
@@ -759,10 +629,9 @@ function beep(freq, duration){
 ========================= */
 function updateClock(){
   const now = new Date();
-
   document.getElementById("statusbar").innerHTML =
-    "SYSTEM STATUS: ACTIVE<br>" +
-    "LOCAL TIME: " + now.toLocaleString();
+    "SYSTEM: ACTIVE<br>" +
+    now.toLocaleString();
 }
 
 /* =========================
@@ -786,8 +655,8 @@ function searchFile(){
   }
 
   currentFile = found;
-
   document.getElementById("tabs").style.display = "flex";
+
   showTab("personnel");
 }
 
@@ -819,7 +688,7 @@ ${safe(f.profile)}`;
     r.innerText = safe(f.ability);
   }
 
-  if(tab === "scp"){
+  if(tab === "███"){
     r.innerText =
 `WEAPON:
 ${safe(f.weapon)}
@@ -827,8 +696,8 @@ ${safe(f.weapon)}
 DETAIL:
 ${safe(f.Description)}
 
-SCP:
-${safe(f.SCP)}`;
+CP:   <!-- ★ここ変更 -->
+${safe(f.CP ?? f.CP)}`;
   }
 
   if(tab === "record"){
@@ -846,7 +715,7 @@ ${safe(f.note)}`;
 ========================= */
 function loadStaffList(){
   const list = document.getElementById("staffList");
-  if(!list) return;
+  if(!list || typeof files === "undefined") return;
 
   list.innerHTML = "";
 
@@ -855,12 +724,12 @@ function loadStaffList(){
     div.className = "staffEntry";
 
     div.innerHTML = `
-      STAFF ID: ${f.id}<br>
+      ID: ${f.id}<br>
       NAME: ${f.name}<br>
       CLEARANCE: ${f.clearance}
     `;
 
-    div.onclick = ()=>{
+    div.onclick = () => {
       document.getElementById("staffId").value = f.id;
       searchFile();
     };
@@ -882,7 +751,7 @@ function toggleStaffList(){
    SWIPE
 ========================= */
 let startX = 0;
-const tabs = ["personnel","ability","scp","record"];
+const tabs = ["personnel","ability","███","record"];
 let tabIndex = 0;
 
 document.addEventListener("touchstart",e=>{
