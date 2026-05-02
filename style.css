@@ -1,9 +1,6 @@
-/* 基本設定：ズーム防止とタッチ操作の最適化 */
 * {
   box-sizing: border-box;
-  /* タップ時の青いハイライトを消す（任意） */
   -webkit-tap-highlight-color: transparent;
-  /* 横幅の突き抜けを物理的に阻止 */
   max-width: 100%;
 }
 
@@ -11,58 +8,66 @@ html, body {
   margin: 0;
   padding: 0;
   width: 100%;
-  /* 高さの計算をスマホのツールバーに合わせる */
-  min-height: 100dvh; 
+  min-height: 100dvh;
   overflow-x: hidden;
-  background: #000;
+
+  /* 🔥 強制黒背景（白潰し） */
+  background: #000 !important;
+  color: #00ff00 !important;
 }
 
 body {
-  color: #00ff00;
   font-family: 'Courier New', Courier, monospace;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
-  padding: 16px; /* 少し余裕を持たせる */
+  padding: 16px;
   line-height: 1.6;
 }
 
-/* 入力エリア：iOSの自動ズームを防止 */
+/* 🔥 全体の背景白化を完全封印 */
+#loginScreen,
+#mainTerminal,
+#bootScreen,
+#loginBox,
+.inputArea {
+  background: #000 !important;
+}
+
+/* 入力系 */
 input, select, textarea {
   width: 100%;
   padding: 12px;
   margin: 8px 0;
-  /* iOSは16px未満だとフォーカス時にズームするため16px固定 */
   font-size: 16px !important;
+
   background: #000;
   color: #00ff00;
   border: 1px solid #00ff00;
-  border-radius: 0; /* iOSの角丸をリセット */
   appearance: none;
 }
 
-/* ボタン：押しやすさ（アクセシビリティ）の向上 */
+/* ボタン */
 button {
   width: 100%;
-  min-height: 48px; /* 指で押しやすい最小サイズ */
+  min-height: 48px;
   padding: 12px;
   margin: 8px 0;
+
   font-size: 16px;
   font-weight: bold;
+
   background: #000;
   color: #00ff00;
   border: 1px solid #00ff00;
-  cursor: pointer;
-  transition: all 0.2s;
 }
 
-/* スマホ特有の「触った感」を出す */
 button:active {
   background: #00ff00;
   color: #000;
   transform: scale(0.98);
 }
 
-/* タブレイアウトの改善 */
+/* タブ */
 #tabs {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -71,43 +76,58 @@ button:active {
 }
 
 #tabs button {
-  margin: 0; /* Grid使用時はmargin不要 */
+  margin: 0;
 }
 
-/* 出力エリア：読みやすさと折り返し */
+/* 結果ログ */
 #result {
   margin-top: 15px;
   padding: 12px;
+
   border: 1px solid #00ff00;
-  background: rgba(0, 50, 0, 0.2);
-  
-  /* テキストの折り返し設定 */
+  background: rgba(0, 0, 0, 0.9);
+
   white-space: pre-wrap;
-  word-break: break-all;
+  word-break: break-word;
   overflow-wrap: anywhere;
-  
+
   font-size: 14px;
   line-height: 1.5;
-  /* 長いログが出る場合はここをスクロール可能に */
+
   max-height: 50vh;
   overflow-y: auto;
 }
 
-/* 職員リスト：カード状にして見やすく */
+/* スタッフリスト */
 .staffEntry {
   padding: 12px;
   margin-bottom: 10px;
+
   border: 1px solid #003300;
-  background: #050505;
+  background: #000;
   font-size: 14px;
 }
 
-/* ステータスバー：上部に固定してもOK */
+/* ステータスバー */
 #statusbar {
   font-size: 12px;
   padding-bottom: 8px;
-  border-bottom: 1px double #00ff00;
+  border-bottom: 1px solid #00ff00;
   margin-bottom: 15px;
+
   display: flex;
   justify-content: space-between;
+}
+
+/* ログイン中央固定 */
+#loginScreen {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#loginBox {
+  width: 100%;
+  max-width: 320px;
 }
