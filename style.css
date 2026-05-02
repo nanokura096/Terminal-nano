@@ -120,3 +120,23 @@ button:active {
   border-bottom: 1px solid #00ff00;
   padding-bottom: 6px;
 }
+@keyframes shake {
+  0% { transform: translate(0,0); }
+  20% { transform: translate(-3px,2px); }
+  40% { transform: translate(3px,-2px); }
+  60% { transform: translate(-2px,1px); }
+  80% { transform: translate(2px,-1px); }
+  100% { transform: translate(0,0); }
+}
+
+@keyframes glitchFlash {
+  0% { filter: none; }
+  25% { filter: contrast(2) brightness(1.5); }
+  50% { filter: invert(1); }
+  75% { filter: contrast(2) hue-rotate(90deg); }
+  100% { filter: none; }
+}
+
+.noise {
+  animation: shake 0.2s linear 3, glitchFlash 0.4s ease;
+}
