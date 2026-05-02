@@ -1,40 +1,45 @@
+<<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>SCP TERMINAL</title>
+
+  <!-- CSS読み込み -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- ログイン画面 -->
 <div id="loginScreen">
-  <div id="loginBox">
-    <div id="loginTitle">AUTHENTICATION REQUIRED</div>
+  <h1>SCP ACCESS TERMINAL</h1>
 
-    <input type="text" id="username" placeholder="[USER ID]" autocomplete="off">
-    <input type="password" id="password" placeholder="[REDACTED]" autocomplete="off">
+  <input id="username" placeholder="USERNAME">
+  <input id="password" type="password" placeholder="PASSWORD">
 
-    <button onclick="login()">ACCESS</button>
+  <button onclick="login()">LOGIN</button>
 
-    <div id="loginError"></div>
-  </div>
+  <div id="loginError"></div>
 </div>
 
+<!-- 起動画面 -->
 <div id="bootScreen"></div>
 
+<!-- メイン画面 -->
 <div id="mainTerminal" style="display:none;">
-
-  <div id="logo">███ FOUNDATION PERSONNEL TERMINAL</div>
 
   <div id="statusbar"></div>
 
-  <div class="inputArea">
-    <input type="text" id="staffId" placeholder="STAFF ID">
-
-    <select id="clearance">
-      <option value="0">0</option>
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3" selected>3</option>
-      <option value="4">4</option>
-      <option value="5">5</option>
-    </select>
-
-    <button onclick="searchFile()">SEARCH DATABASE</button>
+  <div>
+    <input id="staffId" placeholder="FILE ID">
+    <input id="clearance" placeholder="CLEARANCE LEVEL">
+    <button onclick="searchFile()">SEARCH</button>
   </div>
 
-  <div id="tabs" style="display:none;">
+  <div id="tabs">
     <button onclick="showTab('personnel')">PERSONNEL</button>
     <button onclick="showTab('ability')">ABILITY</button>
     <button onclick="showTab('scp')">SCP</button>
@@ -43,10 +48,14 @@
 
   <div id="result"></div>
 
-  <div id="staffListTitle" onclick="toggleStaffList()">
-    ▼ REGISTERED STAFF LIST
-  </div>
-
+  <button onclick="toggleStaffList()">TOGGLE STAFF LIST</button>
   <div id="staffList"></div>
 
 </div>
+
+<!-- JS読み込み -->
+<script src="script.js"></script>
+
+</body>
+
+</html>
