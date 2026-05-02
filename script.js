@@ -591,8 +591,21 @@ function login(){
     startBoot();
   } else {
     error.innerText = "AUTH FAILED";
-    beep(200, 150);
+    beep(200, 
+
+        function login(){
+  const user = document.getElementById("username").value.trim();
+  const pass = document.getElementById("password").value.trim();
+
+  if(user === "Hazmat" && pass === "Nothing"){
+    document.getElementById("loginScreen").style.display = "none";
+    document.getElementById("mainTerminal").style.display = "block";
+    startBoot();
+  } else {
+    document.getElementById("loginError").innerText = "AUTH FAILED";
+    loginFailEffect(); // ←これ追加
   }
+} 
 }
 
 /* =========================
