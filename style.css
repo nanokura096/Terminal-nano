@@ -1,55 +1,66 @@
 * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
-  max-width: 100%;
 }
 
 html, body {
   margin: 0;
   padding: 0;
   width: 100%;
-  min-height: 100dvh;
+  min-height: 100vh;
   overflow-x: hidden;
 
-  /* 🔥 強制黒背景（白潰し） */
+  background: #000 !important;
+  color: #00ff00 !important;
+
+  font-family: monospace;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  padding: 12px;
+}
+
+/* ===== 全画面共通安全化 ===== */
+#loginScreen,
+#bootScreen,
+#mainTerminal,
+#loginBox,
+.inputArea {
   background: #000 !important;
   color: #00ff00 !important;
 }
 
-body {
-  font-family: 'Courier New', Courier, monospace;
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-  padding: 16px;
-  line-height: 1.6;
+/* ===== ログイン ===== */
+#loginScreen {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* 🔥 全体の背景白化を完全封印 */
-#loginScreen,
-#mainTerminal,
-#bootScreen,
-#loginBox,
-.inputArea {
-  background: #000 !important;
+#loginBox {
+  width: 100%;
+  max-width: 320px;
 }
 
-/* 入力系 */
+/* ===== 入力 ===== */
 input, select, textarea {
   width: 100%;
   padding: 12px;
   margin: 8px 0;
-  font-size: 16px !important;
+
+  font-size: 16px;
 
   background: #000;
   color: #00ff00;
   border: 1px solid #00ff00;
-  appearance: none;
+  outline: none;
 }
 
-/* ボタン */
+/* ===== ボタン ===== */
 button {
   width: 100%;
-  min-height: 48px;
   padding: 12px;
   margin: 8px 0;
 
@@ -64,70 +75,48 @@ button {
 button:active {
   background: #00ff00;
   color: #000;
-  transform: scale(0.98);
 }
 
-/* タブ */
+/* ===== タブ ===== */
 #tabs {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 8px;
-  margin: 15px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
 }
 
 #tabs button {
-  margin: 0;
+  flex: 1 1 45%;
 }
 
-/* 結果ログ */
+/* ===== 結果ログ ===== */
 #result {
-  margin-top: 15px;
-  padding: 12px;
-
+  margin-top: 10px;
+  padding: 10px;
   border: 1px solid #00ff00;
-  background: rgba(0, 0, 0, 0.9);
+
+  background: #000;
 
   white-space: pre-wrap;
   word-break: break-word;
   overflow-wrap: anywhere;
 
-  font-size: 14px;
-  line-height: 1.5;
-
   max-height: 50vh;
   overflow-y: auto;
 }
 
-/* スタッフリスト */
+/* ===== スタッフリスト ===== */
 .staffEntry {
-  padding: 12px;
-  margin-bottom: 10px;
-
+  padding: 10px;
+  margin: 6px 0;
   border: 1px solid #003300;
   background: #000;
-  font-size: 14px;
 }
 
-/* ステータスバー */
+/* ===== ステータスバー ===== */
 #statusbar {
   font-size: 12px;
-  padding-bottom: 8px;
+  margin-bottom: 10px;
   border-bottom: 1px solid #00ff00;
-  margin-bottom: 15px;
-
-  display: flex;
-  justify-content: space-between;
-}
-
-/* ログイン中央固定 */
-#loginScreen {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#loginBox {
-  width: 100%;
-  max-width: 320px;
+  padding-bottom: 6px;
 }
